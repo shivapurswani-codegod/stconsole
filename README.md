@@ -1,4 +1,4 @@
-# ST Console v2 — setup guide (about 20 minutes)
+# ST Console v3 — setup guide (about 20 minutes)
 
 ## 1. Supabase (the database)
 1. supabase.com → **New project** (name: ST Console, save the database password).
@@ -21,10 +21,14 @@ New **private** repository → **uploading an existing file** → drag in everyt
 ## 4. First-time use
 - **Settings**: enter weekly fee, payment link and bank details, and the starting kitty balance. Add holidays for the coming months **before** the month starts.
 - **Colours/signs, everywhere:** a **negative** number in **red** = the member owes that amount; a **positive** number in **green** = the member is in credit.
-- **Members**: use "Download upload template", fill in your list (negative number = owes, positive = in credit) and bulk-upload. Monthly meeting fees are posted automatically the first time the console is opened in each new month.
+- **Members**: use "Download upload template", fill in your list and bulk-upload. **Social Fee** is always an amount the member owes and is posted to the month selected on the page (upload again to correct it; blank = no change, 0 = remove). **Opening Meeting Fee Due**: negative = owes, positive = in credit (new members only). Tick the boxes on the left of the table to delete several members at once (you'll be asked to confirm). Monthly meeting fees are posted automatically the first time the console is opened in each new month.
 
 ## Updating later
 GitHub → open the file → pencil icon → paste the new content → Commit. Vercel redeploys by itself in about a minute.
 
 ## If something looks wrong
 A red message at the top of the screen means a save or load failed and tells you why — send it to me as-is. "Couldn't load the console" with a Try-again button means the database could not be reached (usually a mistyped URL or key in Vercel; fix it under Project → Settings → Environment Variables, then Deployments → Redeploy).
+
+
+## Updating from v2 / v2.1 to v3
+No database changes are needed. Replace the files on GitHub (delete the old `src` folder first, so the removed Renewals page goes too) and Vercel redeploys on its own. An old `renewal_members` table in Supabase is simply no longer used and is harmless.

@@ -1,4 +1,4 @@
--- ST Console v2 — Supabase schema
+-- ST Console v3 — Supabase schema
 -- Run this whole file ONCE: Supabase → SQL Editor → New query → paste → Run
 -- (Safe to run again later; it will not delete or duplicate anything.)
 
@@ -10,7 +10,6 @@ create table if not exists settings (
   weekly_fee_per_member numeric not null default 120,
   venue_paid_per_attendee numeric not null default 90,
   visitor_fee numeric not null default 130,
-  renewal_fee numeric not null default 0,
   active_members int not null default 0,
   careem_link text not null default '',
   bank_name text not null default '',
@@ -50,17 +49,6 @@ create table if not exists misc_entries (
   amount numeric not null,
   note text default '',
   invoice_url text default '',
-  created_at timestamptz not null default now()
-);
-
--- ---------- renewals member list ----------
-create table if not exists renewal_members (
-  id uuid primary key default gen_random_uuid(),
-  name text not null,
-  phone text default '',
-  email text default '',
-  renewal_date date,
-  join_date date,
   created_at timestamptz not null default now()
 );
 
@@ -106,7 +94,7 @@ create table if not exists holidays (
 do $$
 declare t text;
 begin
-  for t in select unnest(array['settings','venue_entries','events','misc_entries','renewal_members','fee_members','fee_ledger','holidays'])
+  for t in select unnest(array['settings','venue_entries','events','misc_entries','fee_members','fee_ledger','holidays'])
   loop
     execute format('alter table %I enable row level security', t);
     execute format('drop policy if exists "authenticated full access" on %I', t);
